@@ -7,49 +7,57 @@ Unused terminals:
 Grammar
 
 Rule 0     S' -> expression
-Rule 1     expression -> ID EQUAL expression
+Rule 1     expression -> INT
 Rule 2     expression -> ID
-Rule 3     expression -> INT
-Rule 4     expression -> FLOAT
-Rule 5     expression -> STRING
-Rule 6     expression -> SAY expression
-Rule 7     expression -> SET ID EQUAL expression
+Rule 3     expression -> FLOAT
+Rule 4     expression -> STRING
+Rule 5     expression -> SET ID EQUAL expression
+Rule 6     expression -> FSTRING
+Rule 7     expression -> ID EQUAL expression
+Rule 8     expression -> COMMENT
+Rule 9     expression -> SAY expression
 
 Terminals, with rules where they appear
 
-EQUAL                : 1 7
-FLOAT                : 4
-ID                   : 1 2 7
-INT                  : 3
-SAY                  : 6
-SET                  : 7
-STRING               : 5
+COMMENT              : 8
+EQUAL                : 5 7
+FLOAT                : 3
+FSTRING              : 6
+ID                   : 2 5 7
+INT                  : 1
+SAY                  : 9
+SET                  : 5
+STRING               : 4
 VALUE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-expression           : 1 6 7 0
+expression           : 5 7 9 0
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . expression
-    (1) expression -> . ID EQUAL expression
+    (1) expression -> . INT
     (2) expression -> . ID
-    (3) expression -> . INT
-    (4) expression -> . FLOAT
-    (5) expression -> . STRING
-    (6) expression -> . SAY expression
-    (7) expression -> . SET ID EQUAL expression
+    (3) expression -> . FLOAT
+    (4) expression -> . STRING
+    (5) expression -> . SET ID EQUAL expression
+    (6) expression -> . FSTRING
+    (7) expression -> . ID EQUAL expression
+    (8) expression -> . COMMENT
+    (9) expression -> . SAY expression
 
-    ID              shift and go to state 2
-    INT             shift and go to state 3
+    INT             shift and go to state 2
+    ID              shift and go to state 3
     FLOAT           shift and go to state 4
     STRING          shift and go to state 5
-    SAY             shift and go to state 6
-    SET             shift and go to state 7
+    SET             shift and go to state 6
+    FSTRING         shift and go to state 7
+    COMMENT         shift and go to state 8
+    SAY             shift and go to state 9
 
     expression                     shift and go to state 1
 
@@ -61,125 +69,151 @@ state 1
 
 state 2
 
-    (1) expression -> ID . EQUAL expression
-    (2) expression -> ID .
+    (1) expression -> INT .
 
-    EQUAL           shift and go to state 8
-    $end            reduce using rule 2 (expression -> ID .)
+    $end            reduce using rule 1 (expression -> INT .)
 
 
 state 3
 
-    (3) expression -> INT .
+    (2) expression -> ID .
+    (7) expression -> ID . EQUAL expression
 
-    $end            reduce using rule 3 (expression -> INT .)
+    $end            reduce using rule 2 (expression -> ID .)
+    EQUAL           shift and go to state 10
 
 
 state 4
 
-    (4) expression -> FLOAT .
+    (3) expression -> FLOAT .
 
-    $end            reduce using rule 4 (expression -> FLOAT .)
+    $end            reduce using rule 3 (expression -> FLOAT .)
 
 
 state 5
 
-    (5) expression -> STRING .
+    (4) expression -> STRING .
 
-    $end            reduce using rule 5 (expression -> STRING .)
+    $end            reduce using rule 4 (expression -> STRING .)
 
 
 state 6
 
-    (6) expression -> SAY . expression
-    (1) expression -> . ID EQUAL expression
-    (2) expression -> . ID
-    (3) expression -> . INT
-    (4) expression -> . FLOAT
-    (5) expression -> . STRING
-    (6) expression -> . SAY expression
-    (7) expression -> . SET ID EQUAL expression
+    (5) expression -> SET . ID EQUAL expression
 
-    ID              shift and go to state 2
-    INT             shift and go to state 3
-    FLOAT           shift and go to state 4
-    STRING          shift and go to state 5
-    SAY             shift and go to state 6
-    SET             shift and go to state 7
+    ID              shift and go to state 11
 
-    expression                     shift and go to state 9
 
 state 7
 
-    (7) expression -> SET . ID EQUAL expression
+    (6) expression -> FSTRING .
 
-    ID              shift and go to state 10
+    $end            reduce using rule 6 (expression -> FSTRING .)
 
 
 state 8
 
-    (1) expression -> ID EQUAL . expression
-    (1) expression -> . ID EQUAL expression
-    (2) expression -> . ID
-    (3) expression -> . INT
-    (4) expression -> . FLOAT
-    (5) expression -> . STRING
-    (6) expression -> . SAY expression
-    (7) expression -> . SET ID EQUAL expression
+    (8) expression -> COMMENT .
 
-    ID              shift and go to state 2
-    INT             shift and go to state 3
-    FLOAT           shift and go to state 4
-    STRING          shift and go to state 5
-    SAY             shift and go to state 6
-    SET             shift and go to state 7
+    $end            reduce using rule 8 (expression -> COMMENT .)
 
-    expression                     shift and go to state 11
 
 state 9
 
-    (6) expression -> SAY expression .
+    (9) expression -> SAY . expression
+    (1) expression -> . INT
+    (2) expression -> . ID
+    (3) expression -> . FLOAT
+    (4) expression -> . STRING
+    (5) expression -> . SET ID EQUAL expression
+    (6) expression -> . FSTRING
+    (7) expression -> . ID EQUAL expression
+    (8) expression -> . COMMENT
+    (9) expression -> . SAY expression
 
-    $end            reduce using rule 6 (expression -> SAY expression .)
+    INT             shift and go to state 2
+    ID              shift and go to state 3
+    FLOAT           shift and go to state 4
+    STRING          shift and go to state 5
+    SET             shift and go to state 6
+    FSTRING         shift and go to state 7
+    COMMENT         shift and go to state 8
+    SAY             shift and go to state 9
 
+    expression                     shift and go to state 12
 
 state 10
 
-    (7) expression -> SET ID . EQUAL expression
+    (7) expression -> ID EQUAL . expression
+    (1) expression -> . INT
+    (2) expression -> . ID
+    (3) expression -> . FLOAT
+    (4) expression -> . STRING
+    (5) expression -> . SET ID EQUAL expression
+    (6) expression -> . FSTRING
+    (7) expression -> . ID EQUAL expression
+    (8) expression -> . COMMENT
+    (9) expression -> . SAY expression
 
-    EQUAL           shift and go to state 12
+    INT             shift and go to state 2
+    ID              shift and go to state 3
+    FLOAT           shift and go to state 4
+    STRING          shift and go to state 5
+    SET             shift and go to state 6
+    FSTRING         shift and go to state 7
+    COMMENT         shift and go to state 8
+    SAY             shift and go to state 9
 
+    expression                     shift and go to state 13
 
 state 11
 
-    (1) expression -> ID EQUAL expression .
+    (5) expression -> SET ID . EQUAL expression
 
-    $end            reduce using rule 1 (expression -> ID EQUAL expression .)
+    EQUAL           shift and go to state 14
 
 
 state 12
 
-    (7) expression -> SET ID EQUAL . expression
-    (1) expression -> . ID EQUAL expression
-    (2) expression -> . ID
-    (3) expression -> . INT
-    (4) expression -> . FLOAT
-    (5) expression -> . STRING
-    (6) expression -> . SAY expression
-    (7) expression -> . SET ID EQUAL expression
+    (9) expression -> SAY expression .
 
-    ID              shift and go to state 2
-    INT             shift and go to state 3
-    FLOAT           shift and go to state 4
-    STRING          shift and go to state 5
-    SAY             shift and go to state 6
-    SET             shift and go to state 7
+    $end            reduce using rule 9 (expression -> SAY expression .)
 
-    expression                     shift and go to state 13
 
 state 13
 
-    (7) expression -> SET ID EQUAL expression .
+    (7) expression -> ID EQUAL expression .
 
-    $end            reduce using rule 7 (expression -> SET ID EQUAL expression .)
+    $end            reduce using rule 7 (expression -> ID EQUAL expression .)
+
+
+state 14
+
+    (5) expression -> SET ID EQUAL . expression
+    (1) expression -> . INT
+    (2) expression -> . ID
+    (3) expression -> . FLOAT
+    (4) expression -> . STRING
+    (5) expression -> . SET ID EQUAL expression
+    (6) expression -> . FSTRING
+    (7) expression -> . ID EQUAL expression
+    (8) expression -> . COMMENT
+    (9) expression -> . SAY expression
+
+    INT             shift and go to state 2
+    ID              shift and go to state 3
+    FLOAT           shift and go to state 4
+    STRING          shift and go to state 5
+    SET             shift and go to state 6
+    FSTRING         shift and go to state 7
+    COMMENT         shift and go to state 8
+    SAY             shift and go to state 9
+
+    expression                     shift and go to state 15
+
+state 15
+
+    (5) expression -> SET ID EQUAL expression .
+
+    $end            reduce using rule 5 (expression -> SET ID EQUAL expression .)
 

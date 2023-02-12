@@ -1,0 +1,9 @@
+Task Welcome(name){
+    Say $"Hello, [name]!"
+    Say $"This is gonna be how functions look!"
+    return
+}
+
+
+Welcome("Jade")
+~~ Would return "None"

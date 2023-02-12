@@ -1,7 +1,7 @@
 ~~ Example #1
 Task Welcome(name){
     Say $"Hello, [name]!"
-    Say $"This is gonna be how functions look!"
+    Say "This is gonna be how functions look!"
     return
 }
 

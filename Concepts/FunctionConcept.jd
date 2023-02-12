@@ -1,3 +1,4 @@
+~~ Example #1
 Task Welcome(name){
     Say $"Hello, [name]!"
     Say $"This is gonna be how functions look!"
@@ -7,3 +8,15 @@ Task Welcome(name){
 
 Welcome("Jade")
 ~~ Would return "None"
+
+
+~~Example #2
+
+Task Profile(bio){
+    Set proBio = bio
+    Set Likes = 1302
+    Set Vids = 33
+    Say $"I have [Vids] videos and [Likes]..wait just a sec"
+    Likes = Likes + 2
+    Say $"Make it [Likes] likes!"
+}

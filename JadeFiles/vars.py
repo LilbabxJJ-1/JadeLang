@@ -7,7 +7,7 @@ def p_expression_id(p):
         p[0] = variables[f"{p[1]}"]
     except KeyError:
         print(f"Variable '{p[1]}' Not Defined: {p[1]}\n"
-              f"                                  {'^' * len(p[1])}")
+              f"                            {'^' * len(p[1])}")
         exit()
 
 def p_expression_set(p):

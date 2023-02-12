@@ -1,7 +1,6 @@
 Set name = "Jade"
-name = "Tony" ~~ Should update name
 Set favThing = "Chocolate"
-Set mySentence = $"I am [name] and love [favThing]
+Set mySentence = $"I am [name] and love [favThing]"
 ~~ This is a comment, Ignore this!
 Say mySentence
-~~ Outputs 'I am Tony and love Chocolate'
+~~ Outputs 'I am Jade and love Chocolate'

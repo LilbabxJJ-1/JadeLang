@@ -2,6 +2,10 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    FUNCNAME
+    LBRACKET
+    RBRACKET
+    TASK
     VALUE
 
 Grammar
@@ -15,26 +19,38 @@ Rule 5     expression -> SET ID EQUAL expression
 Rule 6     expression -> FSTRING
 Rule 7     expression -> ID EQUAL expression
 Rule 8     expression -> ID EQUAL expression COMMENT
-Rule 9     expression -> COMMENT
-Rule 10    expression -> SAY expression
+Rule 9     expression -> expression ADD expression
+Rule 10    expression -> expression MULTIPLY expression
+Rule 11    expression -> expression MINUS expression
+Rule 12    expression -> expression DIVIDE expression
+Rule 13    expression -> COMMENT
+Rule 14    expression -> SAY expression
 
 Terminals, with rules where they appear
 
-COMMENT              : 8 9
+ADD                  : 9
+COMMENT              : 8 13
+DIVIDE               : 12
 EQUAL                : 5 7 8
 FLOAT                : 3
 FSTRING              : 6
+FUNCNAME             : 
 ID                   : 2 5 7 8
 INT                  : 1
-SAY                  : 10
+LBRACKET             : 
+MINUS                : 11
+MULTIPLY             : 10
+RBRACKET             : 
+SAY                  : 14
 SET                  : 5
 STRING               : 4
+TASK                 : 
 VALUE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-expression           : 5 7 8 10 0
+expression           : 5 7 8 9 9 10 10 11 11 12 12 14 0
 
 Parsing method: LALR
 
@@ -49,8 +65,12 @@ state 0
     (6) expression -> . FSTRING
     (7) expression -> . ID EQUAL expression
     (8) expression -> . ID EQUAL expression COMMENT
-    (9) expression -> . COMMENT
-    (10) expression -> . SAY expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression MULTIPLY expression
+    (11) expression -> . expression MINUS expression
+    (12) expression -> . expression DIVIDE expression
+    (13) expression -> . COMMENT
+    (14) expression -> . SAY expression
 
     INT             shift and go to state 2
     ID              shift and go to state 3
@@ -66,13 +86,25 @@ state 0
 state 1
 
     (0) S' -> expression .
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . MULTIPLY expression
+    (11) expression -> expression . MINUS expression
+    (12) expression -> expression . DIVIDE expression
 
+    ADD             shift and go to state 10
+    MULTIPLY        shift and go to state 11
+    MINUS           shift and go to state 12
+    DIVIDE          shift and go to state 13
 
 
 state 2
 
     (1) expression -> INT .
 
+    ADD             reduce using rule 1 (expression -> INT .)
+    MULTIPLY        reduce using rule 1 (expression -> INT .)
+    MINUS           reduce using rule 1 (expression -> INT .)
+    DIVIDE          reduce using rule 1 (expression -> INT .)
     $end            reduce using rule 1 (expression -> INT .)
     COMMENT         reduce using rule 1 (expression -> INT .)
 
@@ -83,15 +115,23 @@ state 3
     (7) expression -> ID . EQUAL expression
     (8) expression -> ID . EQUAL expression COMMENT
 
+    ADD             reduce using rule 2 (expression -> ID .)
+    MULTIPLY        reduce using rule 2 (expression -> ID .)
+    MINUS           reduce using rule 2 (expression -> ID .)
+    DIVIDE          reduce using rule 2 (expression -> ID .)
     $end            reduce using rule 2 (expression -> ID .)
     COMMENT         reduce using rule 2 (expression -> ID .)
-    EQUAL           shift and go to state 10
+    EQUAL           shift and go to state 14
 
 
 state 4
 
     (3) expression -> FLOAT .
 
+    ADD             reduce using rule 3 (expression -> FLOAT .)
+    MULTIPLY        reduce using rule 3 (expression -> FLOAT .)
+    MINUS           reduce using rule 3 (expression -> FLOAT .)
+    DIVIDE          reduce using rule 3 (expression -> FLOAT .)
     $end            reduce using rule 3 (expression -> FLOAT .)
     COMMENT         reduce using rule 3 (expression -> FLOAT .)
 
@@ -100,6 +140,10 @@ state 5
 
     (4) expression -> STRING .
 
+    ADD             reduce using rule 4 (expression -> STRING .)
+    MULTIPLY        reduce using rule 4 (expression -> STRING .)
+    MINUS           reduce using rule 4 (expression -> STRING .)
+    DIVIDE          reduce using rule 4 (expression -> STRING .)
     $end            reduce using rule 4 (expression -> STRING .)
     COMMENT         reduce using rule 4 (expression -> STRING .)
 
@@ -108,28 +152,36 @@ state 6
 
     (5) expression -> SET . ID EQUAL expression
 
-    ID              shift and go to state 11
+    ID              shift and go to state 15
 
 
 state 7
 
     (6) expression -> FSTRING .
 
+    ADD             reduce using rule 6 (expression -> FSTRING .)
+    MULTIPLY        reduce using rule 6 (expression -> FSTRING .)
+    MINUS           reduce using rule 6 (expression -> FSTRING .)
+    DIVIDE          reduce using rule 6 (expression -> FSTRING .)
     $end            reduce using rule 6 (expression -> FSTRING .)
     COMMENT         reduce using rule 6 (expression -> FSTRING .)
 
 
 state 8
 
-    (9) expression -> COMMENT .
+    (13) expression -> COMMENT .
 
-    $end            reduce using rule 9 (expression -> COMMENT .)
-    COMMENT         reduce using rule 9 (expression -> COMMENT .)
+    ADD             reduce using rule 13 (expression -> COMMENT .)
+    MULTIPLY        reduce using rule 13 (expression -> COMMENT .)
+    MINUS           reduce using rule 13 (expression -> COMMENT .)
+    DIVIDE          reduce using rule 13 (expression -> COMMENT .)
+    $end            reduce using rule 13 (expression -> COMMENT .)
+    COMMENT         reduce using rule 13 (expression -> COMMENT .)
 
 
 state 9
 
-    (10) expression -> SAY . expression
+    (14) expression -> SAY . expression
     (1) expression -> . INT
     (2) expression -> . ID
     (3) expression -> . FLOAT
@@ -138,86 +190,12 @@ state 9
     (6) expression -> . FSTRING
     (7) expression -> . ID EQUAL expression
     (8) expression -> . ID EQUAL expression COMMENT
-    (9) expression -> . COMMENT
-    (10) expression -> . SAY expression
-
-    INT             shift and go to state 2
-    ID              shift and go to state 3
-    FLOAT           shift and go to state 4
-    STRING          shift and go to state 5
-    SET             shift and go to state 6
-    FSTRING         shift and go to state 7
-    COMMENT         shift and go to state 8
-    SAY             shift and go to state 9
-
-    expression                     shift and go to state 12
-
-state 10
-
-    (7) expression -> ID EQUAL . expression
-    (8) expression -> ID EQUAL . expression COMMENT
-    (1) expression -> . INT
-    (2) expression -> . ID
-    (3) expression -> . FLOAT
-    (4) expression -> . STRING
-    (5) expression -> . SET ID EQUAL expression
-    (6) expression -> . FSTRING
-    (7) expression -> . ID EQUAL expression
-    (8) expression -> . ID EQUAL expression COMMENT
-    (9) expression -> . COMMENT
-    (10) expression -> . SAY expression
-
-    INT             shift and go to state 2
-    ID              shift and go to state 3
-    FLOAT           shift and go to state 4
-    STRING          shift and go to state 5
-    SET             shift and go to state 6
-    FSTRING         shift and go to state 7
-    COMMENT         shift and go to state 8
-    SAY             shift and go to state 9
-
-    expression                     shift and go to state 13
-
-state 11
-
-    (5) expression -> SET ID . EQUAL expression
-
-    EQUAL           shift and go to state 14
-
-
-state 12
-
-    (10) expression -> SAY expression .
-
-    $end            reduce using rule 10 (expression -> SAY expression .)
-    COMMENT         reduce using rule 10 (expression -> SAY expression .)
-
-
-state 13
-
-    (7) expression -> ID EQUAL expression .
-    (8) expression -> ID EQUAL expression . COMMENT
-
-  ! shift/reduce conflict for COMMENT resolved as shift
-    $end            reduce using rule 7 (expression -> ID EQUAL expression .)
-    COMMENT         shift and go to state 15
-
-  ! COMMENT         [ reduce using rule 7 (expression -> ID EQUAL expression .) ]
-
-
-state 14
-
-    (5) expression -> SET ID EQUAL . expression
-    (1) expression -> . INT
-    (2) expression -> . ID
-    (3) expression -> . FLOAT
-    (4) expression -> . STRING
-    (5) expression -> . SET ID EQUAL expression
-    (6) expression -> . FSTRING
-    (7) expression -> . ID EQUAL expression
-    (8) expression -> . ID EQUAL expression COMMENT
-    (9) expression -> . COMMENT
-    (10) expression -> . SAY expression
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression MULTIPLY expression
+    (11) expression -> . expression MINUS expression
+    (12) expression -> . expression DIVIDE expression
+    (13) expression -> . COMMENT
+    (14) expression -> . SAY expression
 
     INT             shift and go to state 2
     ID              shift and go to state 3
@@ -230,22 +208,406 @@ state 14
 
     expression                     shift and go to state 16
 
+state 10
+
+    (9) expression -> expression ADD . expression
+    (1) expression -> . INT
+    (2) expression -> . ID
+    (3) expression -> . FLOAT
+    (4) expression -> . STRING
+    (5) expression -> . SET ID EQUAL expression
+    (6) expression -> . FSTRING
+    (7) expression -> . ID EQUAL expression
+    (8) expression -> . ID EQUAL expression COMMENT
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression MULTIPLY expression
+    (11) expression -> . expression MINUS expression
+    (12) expression -> . expression DIVIDE expression
+    (13) expression -> . COMMENT
+    (14) expression -> . SAY expression
+
+    INT             shift and go to state 2
+    ID              shift and go to state 3
+    FLOAT           shift and go to state 4
+    STRING          shift and go to state 5
+    SET             shift and go to state 6
+    FSTRING         shift and go to state 7
+    COMMENT         shift and go to state 8
+    SAY             shift and go to state 9
+
+    expression                     shift and go to state 17
+
+state 11
+
+    (10) expression -> expression MULTIPLY . expression
+    (1) expression -> . INT
+    (2) expression -> . ID
+    (3) expression -> . FLOAT
+    (4) expression -> . STRING
+    (5) expression -> . SET ID EQUAL expression
+    (6) expression -> . FSTRING
+    (7) expression -> . ID EQUAL expression
+    (8) expression -> . ID EQUAL expression COMMENT
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression MULTIPLY expression
+    (11) expression -> . expression MINUS expression
+    (12) expression -> . expression DIVIDE expression
+    (13) expression -> . COMMENT
+    (14) expression -> . SAY expression
+
+    INT             shift and go to state 2
+    ID              shift and go to state 3
+    FLOAT           shift and go to state 4
+    STRING          shift and go to state 5
+    SET             shift and go to state 6
+    FSTRING         shift and go to state 7
+    COMMENT         shift and go to state 8
+    SAY             shift and go to state 9
+
+    expression                     shift and go to state 18
+
+state 12
+
+    (11) expression -> expression MINUS . expression
+    (1) expression -> . INT
+    (2) expression -> . ID
+    (3) expression -> . FLOAT
+    (4) expression -> . STRING
+    (5) expression -> . SET ID EQUAL expression
+    (6) expression -> . FSTRING
+    (7) expression -> . ID EQUAL expression
+    (8) expression -> . ID EQUAL expression COMMENT
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression MULTIPLY expression
+    (11) expression -> . expression MINUS expression
+    (12) expression -> . expression DIVIDE expression
+    (13) expression -> . COMMENT
+    (14) expression -> . SAY expression
+
+    INT             shift and go to state 2
+    ID              shift and go to state 3
+    FLOAT           shift and go to state 4
+    STRING          shift and go to state 5
+    SET             shift and go to state 6
+    FSTRING         shift and go to state 7
+    COMMENT         shift and go to state 8
+    SAY             shift and go to state 9
+
+    expression                     shift and go to state 19
+
+state 13
+
+    (12) expression -> expression DIVIDE . expression
+    (1) expression -> . INT
+    (2) expression -> . ID
+    (3) expression -> . FLOAT
+    (4) expression -> . STRING
+    (5) expression -> . SET ID EQUAL expression
+    (6) expression -> . FSTRING
+    (7) expression -> . ID EQUAL expression
+    (8) expression -> . ID EQUAL expression COMMENT
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression MULTIPLY expression
+    (11) expression -> . expression MINUS expression
+    (12) expression -> . expression DIVIDE expression
+    (13) expression -> . COMMENT
+    (14) expression -> . SAY expression
+
+    INT             shift and go to state 2
+    ID              shift and go to state 3
+    FLOAT           shift and go to state 4
+    STRING          shift and go to state 5
+    SET             shift and go to state 6
+    FSTRING         shift and go to state 7
+    COMMENT         shift and go to state 8
+    SAY             shift and go to state 9
+
+    expression                     shift and go to state 20
+
+state 14
+
+    (7) expression -> ID EQUAL . expression
+    (8) expression -> ID EQUAL . expression COMMENT
+    (1) expression -> . INT
+    (2) expression -> . ID
+    (3) expression -> . FLOAT
+    (4) expression -> . STRING
+    (5) expression -> . SET ID EQUAL expression
+    (6) expression -> . FSTRING
+    (7) expression -> . ID EQUAL expression
+    (8) expression -> . ID EQUAL expression COMMENT
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression MULTIPLY expression
+    (11) expression -> . expression MINUS expression
+    (12) expression -> . expression DIVIDE expression
+    (13) expression -> . COMMENT
+    (14) expression -> . SAY expression
+
+    INT             shift and go to state 2
+    ID              shift and go to state 3
+    FLOAT           shift and go to state 4
+    STRING          shift and go to state 5
+    SET             shift and go to state 6
+    FSTRING         shift and go to state 7
+    COMMENT         shift and go to state 8
+    SAY             shift and go to state 9
+
+    expression                     shift and go to state 21
+
 state 15
 
-    (8) expression -> ID EQUAL expression COMMENT .
+    (5) expression -> SET ID . EQUAL expression
 
-    $end            reduce using rule 8 (expression -> ID EQUAL expression COMMENT .)
-    COMMENT         reduce using rule 8 (expression -> ID EQUAL expression COMMENT .)
+    EQUAL           shift and go to state 22
 
 
 state 16
 
-    (5) expression -> SET ID EQUAL expression .
+    (14) expression -> SAY expression .
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . MULTIPLY expression
+    (11) expression -> expression . MINUS expression
+    (12) expression -> expression . DIVIDE expression
 
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for MULTIPLY resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    $end            reduce using rule 14 (expression -> SAY expression .)
+    COMMENT         reduce using rule 14 (expression -> SAY expression .)
+    ADD             shift and go to state 10
+    MULTIPLY        shift and go to state 11
+    MINUS           shift and go to state 12
+    DIVIDE          shift and go to state 13
+
+  ! ADD             [ reduce using rule 14 (expression -> SAY expression .) ]
+  ! MULTIPLY        [ reduce using rule 14 (expression -> SAY expression .) ]
+  ! MINUS           [ reduce using rule 14 (expression -> SAY expression .) ]
+  ! DIVIDE          [ reduce using rule 14 (expression -> SAY expression .) ]
+
+
+state 17
+
+    (9) expression -> expression ADD expression .
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . MULTIPLY expression
+    (11) expression -> expression . MINUS expression
+    (12) expression -> expression . DIVIDE expression
+
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for MULTIPLY resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    $end            reduce using rule 9 (expression -> expression ADD expression .)
+    COMMENT         reduce using rule 9 (expression -> expression ADD expression .)
+    ADD             shift and go to state 10
+    MULTIPLY        shift and go to state 11
+    MINUS           shift and go to state 12
+    DIVIDE          shift and go to state 13
+
+  ! ADD             [ reduce using rule 9 (expression -> expression ADD expression .) ]
+  ! MULTIPLY        [ reduce using rule 9 (expression -> expression ADD expression .) ]
+  ! MINUS           [ reduce using rule 9 (expression -> expression ADD expression .) ]
+  ! DIVIDE          [ reduce using rule 9 (expression -> expression ADD expression .) ]
+
+
+state 18
+
+    (10) expression -> expression MULTIPLY expression .
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . MULTIPLY expression
+    (11) expression -> expression . MINUS expression
+    (12) expression -> expression . DIVIDE expression
+
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for MULTIPLY resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    $end            reduce using rule 10 (expression -> expression MULTIPLY expression .)
+    COMMENT         reduce using rule 10 (expression -> expression MULTIPLY expression .)
+    ADD             shift and go to state 10
+    MULTIPLY        shift and go to state 11
+    MINUS           shift and go to state 12
+    DIVIDE          shift and go to state 13
+
+  ! ADD             [ reduce using rule 10 (expression -> expression MULTIPLY expression .) ]
+  ! MULTIPLY        [ reduce using rule 10 (expression -> expression MULTIPLY expression .) ]
+  ! MINUS           [ reduce using rule 10 (expression -> expression MULTIPLY expression .) ]
+  ! DIVIDE          [ reduce using rule 10 (expression -> expression MULTIPLY expression .) ]
+
+
+state 19
+
+    (11) expression -> expression MINUS expression .
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . MULTIPLY expression
+    (11) expression -> expression . MINUS expression
+    (12) expression -> expression . DIVIDE expression
+
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for MULTIPLY resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    $end            reduce using rule 11 (expression -> expression MINUS expression .)
+    COMMENT         reduce using rule 11 (expression -> expression MINUS expression .)
+    ADD             shift and go to state 10
+    MULTIPLY        shift and go to state 11
+    MINUS           shift and go to state 12
+    DIVIDE          shift and go to state 13
+
+  ! ADD             [ reduce using rule 11 (expression -> expression MINUS expression .) ]
+  ! MULTIPLY        [ reduce using rule 11 (expression -> expression MINUS expression .) ]
+  ! MINUS           [ reduce using rule 11 (expression -> expression MINUS expression .) ]
+  ! DIVIDE          [ reduce using rule 11 (expression -> expression MINUS expression .) ]
+
+
+state 20
+
+    (12) expression -> expression DIVIDE expression .
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . MULTIPLY expression
+    (11) expression -> expression . MINUS expression
+    (12) expression -> expression . DIVIDE expression
+
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for MULTIPLY resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    $end            reduce using rule 12 (expression -> expression DIVIDE expression .)
+    COMMENT         reduce using rule 12 (expression -> expression DIVIDE expression .)
+    ADD             shift and go to state 10
+    MULTIPLY        shift and go to state 11
+    MINUS           shift and go to state 12
+    DIVIDE          shift and go to state 13
+
+  ! ADD             [ reduce using rule 12 (expression -> expression DIVIDE expression .) ]
+  ! MULTIPLY        [ reduce using rule 12 (expression -> expression DIVIDE expression .) ]
+  ! MINUS           [ reduce using rule 12 (expression -> expression DIVIDE expression .) ]
+  ! DIVIDE          [ reduce using rule 12 (expression -> expression DIVIDE expression .) ]
+
+
+state 21
+
+    (7) expression -> ID EQUAL expression .
+    (8) expression -> ID EQUAL expression . COMMENT
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . MULTIPLY expression
+    (11) expression -> expression . MINUS expression
+    (12) expression -> expression . DIVIDE expression
+
+  ! shift/reduce conflict for COMMENT resolved as shift
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for MULTIPLY resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    $end            reduce using rule 7 (expression -> ID EQUAL expression .)
+    COMMENT         shift and go to state 23
+    ADD             shift and go to state 10
+    MULTIPLY        shift and go to state 11
+    MINUS           shift and go to state 12
+    DIVIDE          shift and go to state 13
+
+  ! ADD             [ reduce using rule 7 (expression -> ID EQUAL expression .) ]
+  ! MULTIPLY        [ reduce using rule 7 (expression -> ID EQUAL expression .) ]
+  ! MINUS           [ reduce using rule 7 (expression -> ID EQUAL expression .) ]
+  ! DIVIDE          [ reduce using rule 7 (expression -> ID EQUAL expression .) ]
+  ! COMMENT         [ reduce using rule 7 (expression -> ID EQUAL expression .) ]
+
+
+state 22
+
+    (5) expression -> SET ID EQUAL . expression
+    (1) expression -> . INT
+    (2) expression -> . ID
+    (3) expression -> . FLOAT
+    (4) expression -> . STRING
+    (5) expression -> . SET ID EQUAL expression
+    (6) expression -> . FSTRING
+    (7) expression -> . ID EQUAL expression
+    (8) expression -> . ID EQUAL expression COMMENT
+    (9) expression -> . expression ADD expression
+    (10) expression -> . expression MULTIPLY expression
+    (11) expression -> . expression MINUS expression
+    (12) expression -> . expression DIVIDE expression
+    (13) expression -> . COMMENT
+    (14) expression -> . SAY expression
+
+    INT             shift and go to state 2
+    ID              shift and go to state 3
+    FLOAT           shift and go to state 4
+    STRING          shift and go to state 5
+    SET             shift and go to state 6
+    FSTRING         shift and go to state 7
+    COMMENT         shift and go to state 8
+    SAY             shift and go to state 9
+
+    expression                     shift and go to state 24
+
+state 23
+
+    (8) expression -> ID EQUAL expression COMMENT .
+
+    ADD             reduce using rule 8 (expression -> ID EQUAL expression COMMENT .)
+    MULTIPLY        reduce using rule 8 (expression -> ID EQUAL expression COMMENT .)
+    MINUS           reduce using rule 8 (expression -> ID EQUAL expression COMMENT .)
+    DIVIDE          reduce using rule 8 (expression -> ID EQUAL expression COMMENT .)
+    $end            reduce using rule 8 (expression -> ID EQUAL expression COMMENT .)
+    COMMENT         reduce using rule 8 (expression -> ID EQUAL expression COMMENT .)
+
+
+state 24
+
+    (5) expression -> SET ID EQUAL expression .
+    (9) expression -> expression . ADD expression
+    (10) expression -> expression . MULTIPLY expression
+    (11) expression -> expression . MINUS expression
+    (12) expression -> expression . DIVIDE expression
+
+  ! shift/reduce conflict for ADD resolved as shift
+  ! shift/reduce conflict for MULTIPLY resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
     $end            reduce using rule 5 (expression -> SET ID EQUAL expression .)
     COMMENT         reduce using rule 5 (expression -> SET ID EQUAL expression .)
+    ADD             shift and go to state 10
+    MULTIPLY        shift and go to state 11
+    MINUS           shift and go to state 12
+    DIVIDE          shift and go to state 13
+
+  ! ADD             [ reduce using rule 5 (expression -> SET ID EQUAL expression .) ]
+  ! MULTIPLY        [ reduce using rule 5 (expression -> SET ID EQUAL expression .) ]
+  ! MINUS           [ reduce using rule 5 (expression -> SET ID EQUAL expression .) ]
+  ! DIVIDE          [ reduce using rule 5 (expression -> SET ID EQUAL expression .) ]
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for COMMENT in state 13 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 16 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 16 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 16 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 16 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 17 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 17 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 17 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 17 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 18 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 18 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 18 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 18 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 19 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 19 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 19 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 19 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 20 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 20 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 20 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 20 resolved as shift
+WARNING: shift/reduce conflict for COMMENT in state 21 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 21 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 21 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 21 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 21 resolved as shift
+WARNING: shift/reduce conflict for ADD in state 24 resolved as shift
+WARNING: shift/reduce conflict for MULTIPLY in state 24 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 24 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 24 resolved as shift

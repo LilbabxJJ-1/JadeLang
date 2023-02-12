@@ -1,6 +1,9 @@
 Set name = "Jade"
 Set favThing = "Chocolate"
-Set mySentence = $"I am [name] and love [favThing]"
+Set age = 20 - 3
+
+Set mySentence = $"Hiya, I'm [name], [age] years old and love [favThing]"
 ~~ This is a comment, Ignore this!
+
 Say mySentence
-~~ Outputs 'I am Jade and love Chocolate'
+~~ Outputs 'Hiya, I'm Jade, 17 years old and love Chocolate'

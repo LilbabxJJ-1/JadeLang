@@ -34,7 +34,7 @@ def p_expression_fstring(p):
         closest = var_names.find("]", inx)
         orig = var_names[inx:closest + 1]
         var = orig.removeprefix("[").removesuffix("]")
-        var_names = var_names.replace(orig, variables[var])
+        var_names = var_names.replace(orig, str(variables[var]))
     except KeyError:
         print(f'Variable "{var}" Not Defined: {p[1]}\n'
               f"                              {'^' * len(p[1])}")

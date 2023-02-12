@@ -126,4 +126,6 @@ parser = yacc.yacc()
 
 with open("jade.jd", "r") as Jade:
     for line in Jade:
+        if line == "\n":
+            continue
         parser.parse(line)

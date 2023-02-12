@@ -37,19 +37,21 @@ t_FSTRING = r"\$\".*?\""
 
 # Error handling rule
 def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
+    print(f"Error at: {t.value}\n"
+          f"          {'^' * len(t.value)}")
+    exit()
     t.lexer.skip(1)
 
 
 # Check if the token is a reserved word
 def t_SET(t):
-    r'\bSet\b'
+    r"""\bSet\b"""
     t.type = reserved.get(t.value, 'Set')
     return t
 
 
 def t_SAY(t):
-    r'\bSay\b'
+    r"""\bSay\b"""
     t.type = reserved.get(t.value, 'Say')
     return t
 
@@ -58,7 +60,7 @@ lexer = lex.lex()
 
 
 def t_newline(t):
-    r'\n'
+    r"""\n"""
     t.lexer.lineno += 1
 
 
@@ -68,14 +70,14 @@ def p_expression_comment(p):
 
 
 def p_expression_say(p):
-    '''expression : SAY expression'''
+    """expression : SAY expression"""
     print(p[2])
     return
 
 
 parser = yacc.yacc()
 
-with open("Main.JD", "r") as Jade:
+with open("Jade.JD", "r") as Jade:
     for s in Jade:
         if s == "\n":
             continue

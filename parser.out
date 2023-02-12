@@ -14,18 +14,19 @@ Rule 4     expression -> STRING
 Rule 5     expression -> SET ID EQUAL expression
 Rule 6     expression -> FSTRING
 Rule 7     expression -> ID EQUAL expression
-Rule 8     expression -> COMMENT
-Rule 9     expression -> SAY expression
+Rule 8     expression -> ID EQUAL expression COMMENT
+Rule 9     expression -> COMMENT
+Rule 10    expression -> SAY expression
 
 Terminals, with rules where they appear
 
-COMMENT              : 8
-EQUAL                : 5 7
+COMMENT              : 8 9
+EQUAL                : 5 7 8
 FLOAT                : 3
 FSTRING              : 6
-ID                   : 2 5 7
+ID                   : 2 5 7 8
 INT                  : 1
-SAY                  : 9
+SAY                  : 10
 SET                  : 5
 STRING               : 4
 VALUE                : 
@@ -33,7 +34,7 @@ error                :
 
 Nonterminals, with rules where they appear
 
-expression           : 5 7 9 0
+expression           : 5 7 8 10 0
 
 Parsing method: LALR
 
@@ -47,8 +48,9 @@ state 0
     (5) expression -> . SET ID EQUAL expression
     (6) expression -> . FSTRING
     (7) expression -> . ID EQUAL expression
-    (8) expression -> . COMMENT
-    (9) expression -> . SAY expression
+    (8) expression -> . ID EQUAL expression COMMENT
+    (9) expression -> . COMMENT
+    (10) expression -> . SAY expression
 
     INT             shift and go to state 2
     ID              shift and go to state 3
@@ -72,14 +74,17 @@ state 2
     (1) expression -> INT .
 
     $end            reduce using rule 1 (expression -> INT .)
+    COMMENT         reduce using rule 1 (expression -> INT .)
 
 
 state 3
 
     (2) expression -> ID .
     (7) expression -> ID . EQUAL expression
+    (8) expression -> ID . EQUAL expression COMMENT
 
     $end            reduce using rule 2 (expression -> ID .)
+    COMMENT         reduce using rule 2 (expression -> ID .)
     EQUAL           shift and go to state 10
 
 
@@ -88,6 +93,7 @@ state 4
     (3) expression -> FLOAT .
 
     $end            reduce using rule 3 (expression -> FLOAT .)
+    COMMENT         reduce using rule 3 (expression -> FLOAT .)
 
 
 state 5
@@ -95,6 +101,7 @@ state 5
     (4) expression -> STRING .
 
     $end            reduce using rule 4 (expression -> STRING .)
+    COMMENT         reduce using rule 4 (expression -> STRING .)
 
 
 state 6
@@ -109,18 +116,20 @@ state 7
     (6) expression -> FSTRING .
 
     $end            reduce using rule 6 (expression -> FSTRING .)
+    COMMENT         reduce using rule 6 (expression -> FSTRING .)
 
 
 state 8
 
-    (8) expression -> COMMENT .
+    (9) expression -> COMMENT .
 
-    $end            reduce using rule 8 (expression -> COMMENT .)
+    $end            reduce using rule 9 (expression -> COMMENT .)
+    COMMENT         reduce using rule 9 (expression -> COMMENT .)
 
 
 state 9
 
-    (9) expression -> SAY . expression
+    (10) expression -> SAY . expression
     (1) expression -> . INT
     (2) expression -> . ID
     (3) expression -> . FLOAT
@@ -128,8 +137,9 @@ state 9
     (5) expression -> . SET ID EQUAL expression
     (6) expression -> . FSTRING
     (7) expression -> . ID EQUAL expression
-    (8) expression -> . COMMENT
-    (9) expression -> . SAY expression
+    (8) expression -> . ID EQUAL expression COMMENT
+    (9) expression -> . COMMENT
+    (10) expression -> . SAY expression
 
     INT             shift and go to state 2
     ID              shift and go to state 3
@@ -145,6 +155,7 @@ state 9
 state 10
 
     (7) expression -> ID EQUAL . expression
+    (8) expression -> ID EQUAL . expression COMMENT
     (1) expression -> . INT
     (2) expression -> . ID
     (3) expression -> . FLOAT
@@ -152,8 +163,9 @@ state 10
     (5) expression -> . SET ID EQUAL expression
     (6) expression -> . FSTRING
     (7) expression -> . ID EQUAL expression
-    (8) expression -> . COMMENT
-    (9) expression -> . SAY expression
+    (8) expression -> . ID EQUAL expression COMMENT
+    (9) expression -> . COMMENT
+    (10) expression -> . SAY expression
 
     INT             shift and go to state 2
     ID              shift and go to state 3
@@ -175,16 +187,22 @@ state 11
 
 state 12
 
-    (9) expression -> SAY expression .
+    (10) expression -> SAY expression .
 
-    $end            reduce using rule 9 (expression -> SAY expression .)
+    $end            reduce using rule 10 (expression -> SAY expression .)
+    COMMENT         reduce using rule 10 (expression -> SAY expression .)
 
 
 state 13
 
     (7) expression -> ID EQUAL expression .
+    (8) expression -> ID EQUAL expression . COMMENT
 
+  ! shift/reduce conflict for COMMENT resolved as shift
     $end            reduce using rule 7 (expression -> ID EQUAL expression .)
+    COMMENT         shift and go to state 15
+
+  ! COMMENT         [ reduce using rule 7 (expression -> ID EQUAL expression .) ]
 
 
 state 14
@@ -197,8 +215,9 @@ state 14
     (5) expression -> . SET ID EQUAL expression
     (6) expression -> . FSTRING
     (7) expression -> . ID EQUAL expression
-    (8) expression -> . COMMENT
-    (9) expression -> . SAY expression
+    (8) expression -> . ID EQUAL expression COMMENT
+    (9) expression -> . COMMENT
+    (10) expression -> . SAY expression
 
     INT             shift and go to state 2
     ID              shift and go to state 3
@@ -209,11 +228,24 @@ state 14
     COMMENT         shift and go to state 8
     SAY             shift and go to state 9
 
-    expression                     shift and go to state 15
+    expression                     shift and go to state 16
 
 state 15
+
+    (8) expression -> ID EQUAL expression COMMENT .
+
+    $end            reduce using rule 8 (expression -> ID EQUAL expression COMMENT .)
+    COMMENT         reduce using rule 8 (expression -> ID EQUAL expression COMMENT .)
+
+
+state 16
 
     (5) expression -> SET ID EQUAL expression .
 
     $end            reduce using rule 5 (expression -> SET ID EQUAL expression .)
+    COMMENT         reduce using rule 5 (expression -> SET ID EQUAL expression .)
 
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for COMMENT in state 13 resolved as shift

@@ -6,8 +6,9 @@ def p_expression_id(p):
     try:
         p[0] = variables[f"{p[1]}"]
     except KeyError:
-        print(f"Variable Not Defined: {p[1]}\n"
-              f"                      {'^' * len(p[1])}")
+        print(f"Variable '{p[1]}' Not Defined: {p[1]}\n"
+              f"                                  {'^' * len(p[1])}")
+        exit()
 
 def p_expression_set(p):
     'expression : SET ID EQUAL expression'
@@ -42,5 +43,6 @@ def p_expression_fstring(p):
 
 
 def p_expression_equal(p):
-    """expression : ID EQUAL expression"""
+    """expression : ID EQUAL expression
+                  | ID EQUAL expression COMMENT"""
     variables[p[1]] = p[3]
